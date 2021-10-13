@@ -1,0 +1,8 @@
+from apiclient import endpoint
+
+
+@endpoint(base_url={%- if base_url %}'{{base_url}}'{% elif servers %}'{{servers.0.url}}'{% else %}''{%- endif %})
+class Endpoints:
+    {%- for operation in operations %}
+    {{operation.function_name}}: str = '{{operation.snake_case_path}}'
+    {%- endfor %}

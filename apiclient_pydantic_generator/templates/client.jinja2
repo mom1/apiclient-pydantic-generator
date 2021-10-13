@@ -1,0 +1,26 @@
+from __future__ import annotations
+
+from {% if base_cls.from_ %}{{base_cls.from_}}{% else %}.{% endif %} import {{base_cls.import_}}{% if base_cls.alias %} as {{base_cls.alias}}{% endif %}
+from apiclient_pydantic import serialize_all_methods
+{{imports}}
+
+
+@serialize_all_methods()
+class {{prefix_cls}}APIClient({% if base_cls.alias %} as {{base_cls.alias}}{% else %}{{base_cls.import_}}{% endif %}):
+  {% for operation in operations %}
+  def {{operation.function_name}}(self{%if operation.arguments %}, {{operation.arguments}}{% endif %}) -> {{operation.response}}:
+      {%- if operation.summary %}
+      """{{ operation.summary }}"""
+      {%- endif %}
+      {%if operation.response !=  "None" %}return {% endif %}self.{{operation.method}}(Endpoints.{{operation.function_name}}
+      {%- if operation.path_argument %}
+          .format(**{{operation.path_argument.name}})
+      {%- endif %}
+      {%- if operation.request %}
+        , {{operation.request.name}}
+      {%- endif %}
+      {%- if operation.query_argument %}
+          , {{operation.query_argument.name}}
+      {%- endif %}
+      )
+  {% endfor %}

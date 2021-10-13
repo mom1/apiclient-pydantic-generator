@@ -1,0 +1,107 @@
+[tool.poetry]
+name = "apiclient-pydantic-generator"
+version = "0.0.0"
+description = "This code generator creates a ApiClient app from an openapi file."
+authors = ["MaxST <mstolpasov@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/mom1/apiclient-pydantic-generator"
+repository = "https://github.com/mom1/apiclient-pydantic-generator"
+
+classifiers = [
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Topic :: Software Development :: Code Generators",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: Implementation :: CPython"
+]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+pattern = "^(?P<base>v?\\d+\\.\\d+\\.\\d+)(-?((?P<stage>[a-zA-Z]+)\\.?(?P<revision>\\d+)?))?$"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+apiclient-codegen = 'apiclient_pydantic_generator.__main__:app'
+
+[tool.poetry.dependencies]
+python = ">=3.7,<4.0"
+pydantic = "^1.5"
+api-client = "^1.3"
+api-client-pydantic = "^1.1"
+datamodel-code-generator = "^0.11"
+typer = {version = ">=0.2.1,<0.5.0", extras = ["all"]}
+stringcase = "^1.2"
+Jinja2 = ">=2.11.2,<4.0.0"
+yapf = "^0.31"
+isort = "^5.9"
+
+[tool.poetry.dev-dependencies]
+ward = "^0.65.0-beta.0"
+safety = "^1.10"
+pre-commit = "^2.14"
+flake8 = "^3.9"
+flake8-broken-line = "^0.3"
+flake8-bugbear = "^21.9"
+flake8-builtins = "^1.5"
+flake8-commas = "^2.0"
+flake8-comprehensions = "^3.6"
+flake8-eradicate = "^1.1"
+flake8-quotes = "^3.3"
+pep8-naming = "^0.12"
+mccabe = "^0.6"
+ipdb = "^0.13"
+ipython = "^7.28"
+gitchangelog = "^3.0"
+emoji = "^1.6"
+chevron = "^0.14"
+coverage = "^6.0"
+
+
+[tool.isort]
+# isort configuration:
+# https://github.com/timothycrosley/isort/wiki/isort-Settings
+profile = "django"
+line_length = 99
+balanced_wrapping = true
+indent = 4
+use_parentheses = true
+default_section = "FIRSTPARTY"
+lines_after_imports = 2
+skip_glob="**/migrations/*.py"
+
+[tool.yapf]
+# yapf configuration:
+# https://github.com/google/yapf#formatting-style
+based_on_style = "pep8"
+column_limit = 119
+i18n_comment = "noqa"
+blank_lines_between_top_level_imports_and_variables = 2
+
+[tool.coverage.run]
+# Coverage configuration:
+# https://coverage.readthedocs.io/en/latest/config.html
+# https://coverage.readthedocs.io/en/latest/config.html#run
+source = ["apiclient_pydantic_generator"]
+omit = ["tests"]
+
+[tool.coverage.report]
+# https://coverage.readthedocs.io/en/latest/config.html#report
+exclude_lines =[
+  "pragma: no cover",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+]
+
+[tool.ward]
+order = "random"
+show-diff-symbols = true

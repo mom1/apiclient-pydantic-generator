@@ -1,4 +1,11 @@
 
+#### Release notes for `0.0.2` (2021-10-18)
+
+##### 🌱 Other
+
+- Add LICENSE.
+
+
 #### Release notes for `0.0.1` (2021-10-18)
 
 ##### 📝 Docs

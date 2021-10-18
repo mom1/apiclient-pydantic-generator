@@ -193,7 +193,7 @@ Options:
 </details>
 
 ```sh
-$ apiclient-codegen --input petstore.yaml --output app_petstore --prefix PetStore"
+$ apiclient-codegen --input petstore.yaml --output app_petstore --prefix PetStore
 ```
 
 `app_petstore/__init__.py`:

@@ -17,6 +17,7 @@ This code generator creates a ApiClient app from an openapi file.
 This project uses:
   - [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator) to generate pydantic models
   - [api-client](https://github.com/MikeWooster/api-client) to create class ApiClient
+  - [api-client-pydantic](https://github.com/mom1/api-client-pydantic) extension for validate request data and converting json straight to pydantic class.
 
 
 This project highly inspired [fastapi-code-generator](https://github.com/koxudaxi/fastapi-code-generator)

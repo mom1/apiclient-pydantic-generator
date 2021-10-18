@@ -26,11 +26,10 @@ jobs:
           python-version: 3.8
       - name: Install poetry
         run: |
-          curl -sSL "https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py" | python
-          echo "$HOME/.poetry/bin" >> $GITHUB_PATH
-          python -m pip install poetry-dynamic-versioning
+          python -m pip install --upgrade pip
+          python -m pip install poetry poetry-dynamic-versioning
       - name: Build and publish
         env:
           PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
-          poetry publish --build -u __token__ -p $PYPI_TOKEN
+          poetry publish -u __token__ -p $PYPI_TOKEN --build

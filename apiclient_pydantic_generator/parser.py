@@ -183,6 +183,7 @@ class OpenAPIParser(OpenAPIModelParser):
         custom_class_name_generator: Optional[Callable[[str], str]] = None,
         field_extra_keys: Optional[Set[str]] = None,
         field_include_all_keys: bool = False,
+        skip_deprecated: bool = True,
     ):
         super().__init__(
             source=source,
@@ -229,6 +230,7 @@ class OpenAPIParser(OpenAPIModelParser):
         self.imports_for_endpoints.append(Import(from_='.endpoints', import_='Endpoints'))
         self.data_types: List[DataType] = []
         self.params_classes = set()
+        self.skip_deprecated = skip_deprecated
 
     def parse_info(self) -> Optional[List[Dict[str, List[str]]]]:
         return self.raw_obj.get('info')
@@ -361,16 +363,14 @@ class OpenAPIParser(OpenAPIModelParser):
                 media_obj,
         ) in request_body.content.items():
             if isinstance(media_obj.schema_, (JsonSchemaObject, ReferenceObject)):  # pragma: no cover
-                # TODO: support other content-types
                 if RE_APPLICATION_JSON_PATTERN.match(media_type):
                     if isinstance(media_obj.schema_, ReferenceObject):
                         data_type = self.get_ref_data_type(media_obj.schema_.ref)
                     else:
                         data_type = self.parse_schema(name, media_obj.schema_, [*path, media_type])
                     arguments.append(
-                        # TODO: support multiple body
                         Argument(
-                            name='body',  # type: ignore
+                            name='body',
                             type_hint=data_type.type_hint,
                             required=request_body.required,
                         ))
@@ -401,6 +401,8 @@ class OpenAPIParser(OpenAPIModelParser):
         raw_operation: Dict[str, Any],
         path: List[str],
     ) -> None:
+        if self.skip_deprecated and raw_operation.get('deprecated'):
+            return
         self._temporary_operation = {}
         self._temporary_operation['_parameters'] = []
         super().parse_operation(raw_operation, path)

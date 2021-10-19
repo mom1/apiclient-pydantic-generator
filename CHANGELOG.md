@@ -1,5 +1,10 @@
 
-#### Release notes for `0.0.2` (2021-10-18)
+#### Release notes for `0.1.0` (2021-10-19)
+
+##### ✨ New
+
+- Add option `skip_deprecated` Fix #7.
+  Don't generate code for deprecated operations
 
 ##### 🌱 Other
 

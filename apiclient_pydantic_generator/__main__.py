@@ -42,6 +42,11 @@ def main(
         '-a',
         help='Base class for client class',
     ),
+    skip_deprecated: Optional[bool] = typer.Option(  # noqa: B008
+        True,
+        '--skip-deprecated',
+        help="Don't generate code for deprecated operations",
+    ),
 ) -> None:
     input_name: str = input_file.name
     input_text: str = input_file.read()
@@ -69,6 +74,7 @@ def main(
         data_config,
         prefix_api_cls,
         base_apiclient_cls,
+        skip_deprecated,
     )
 
 
@@ -107,6 +113,7 @@ def generate_code(
     data_config: Config,
     prefix_api_cls: Optional[str],
     base_apiclient_cls: Optional[str],
+    skip_deprecated: Optional[bool],
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     template_dir = template_dir or BUILTIN_TEMPLATE_DIR
@@ -145,6 +152,8 @@ def generate_code(
         empty_enum_field_name=data_config.empty_enum_field_name,
         field_extra_keys=data_config.field_extra_keys,
         field_include_all_keys=data_config.field_include_all_keys,
+        # apiclient
+        skip_deprecated=skip_deprecated,
     )
     with chdir(output_dir):
         models = parser.parse()

@@ -1,12 +1,14 @@
 import json
 import sys
+from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Type, Union
 
 import toml
 import typer
-from datamodel_code_generator import Error, PythonVersion, chdir
+from datamodel_code_generator import Error, chdir
 from datamodel_code_generator.__main__ import Config, Exit
+from datamodel_code_generator.format import CodeFormatter as BlackCodeFormatter
 from datamodel_code_generator.imports import Import, Imports
 from datamodel_code_generator.reference import Reference
 from datamodel_code_generator.types import DataType
@@ -22,6 +24,17 @@ app = typer.Typer()
 BUILTIN_TEMPLATE_DIR = Path(__file__).parent / 'templates'
 
 MODEL_PATH: Path = Path('models.py')
+
+
+class Formatters(str, Enum):
+    YAPF = 'yapf'
+    BLACK = 'black'
+
+
+formaters = {
+    Formatters.YAPF.value: YapfCodeFormatter,
+    Formatters.BLACK.value: BlackCodeFormatter,
+}
 
 
 @app.command()
@@ -42,6 +55,7 @@ def main(
         '-a',
         help='Base class for client class',
     ),
+    formater: Optional[Formatters] = typer.Option(Formatters.YAPF.value, case_sensitive=False),  # noqa: B008
     skip_deprecated: Optional[bool] = typer.Option(  # noqa: B008
         True,
         '--skip-deprecated',
@@ -75,6 +89,7 @@ def main(
         prefix_api_cls,
         base_apiclient_cls,
         skip_deprecated,
+        formaters.get(formater.value) or YapfCodeFormatter,
     )
 
 
@@ -114,6 +129,7 @@ def generate_code(
     prefix_api_cls: Optional[str],
     base_apiclient_cls: Optional[str],
     skip_deprecated: Optional[bool],
+    code_formatter_cls: Type[Union[YapfCodeFormatter, BlackCodeFormatter]],
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     template_dir = template_dir or BUILTIN_TEMPLATE_DIR
@@ -177,12 +193,15 @@ def generate_code(
         if reference:
             imports.append(data_type.all_imports)
             imports.append(Import.from_full_path(f'.{MODEL_PATH.stem}.{reference.name}'))
+
     for from_, imports_ in parser.imports_for_endpoints.items():
         imports[from_].update(imports_)
+
     results: Dict[Path, str] = {}
-    # TODO: Choose formater from cli
-    code_formatter = YapfCodeFormatter(PythonVersion.PY_38, Path().resolve())
+
+    code_formatter = code_formatter_cls(data_config.target_python_version, Path().resolve())
     sorted_operations: List[Operation] = sorted(parser.operations.values(), key=lambda m: m.path)
+
     for target in template_dir.rglob('*'):
         relative_path = target.relative_to(template_dir)
         result = environment.get_template(str(relative_path)).render(

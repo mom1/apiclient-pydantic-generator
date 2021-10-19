@@ -3,6 +3,8 @@
 
 ##### ✨ New
 
+- Add option `formater` Fix #2.
+  [yapf](https://github.com/google/yapf) or [black](https://github.com/psf/black)
 - Add option `skip_deprecated` Fix #7.
   Don't generate code for deprecated operations
 

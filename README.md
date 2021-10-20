@@ -39,15 +39,15 @@ Options:
   -i, --input FILENAME     [required]
   -o, --output PATH        [required]
   -t, --template-dir PATH
-  -b, --base_url TEXT      [default: ]
+  -b, --base_url TEXT
   -p, --prefix TEXT        If "My" then will be MyApiClient  [default: My]
-  -a, --base_api_cls TEXT  Base class for client class  [default:
-                           apiclient.APIClient]
-
+  -a, --base_api_cls TEXT  Base class for client class  [default: apiclient.APIClient]
+  --formater [yapf|black]  [default: yapf]
+  --skip-deprecated        Don't generate code for deprecated operations
+                           [default: True]
   --install-completion     Install completion for the current shell.
   --show-completion        Show completion for the current shell, to copy it
                            or customize the installation.
-
   --help                   Show this message and exit.
 ```
 

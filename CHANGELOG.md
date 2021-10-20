@@ -1,4 +1,11 @@
 
+#### Release notes for `0.1.1` (2021-10-20)
+
+##### 📝 Docs
+
+- Update README.md.
+
+
 #### Release notes for `0.1.0` (2021-10-19)
 
 ##### ✨ New

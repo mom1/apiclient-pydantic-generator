@@ -51,7 +51,6 @@ Options:
   --help                   Show this message and exit.
 ```
 
-
 ## Example
 
 ### OpenAPI
@@ -286,6 +285,31 @@ pet_client = PetStoreAPIClient(response_handler=JsonResponseHandler, request_for
 pets = pet_client.list_pets()
 for pet in pets:
     print(pet.name)
+```
+
+### Generate stub files `pyi`
+
+You can use [stubmaker](https://github.com/Toloka/stubmaker)
+
+```bash
+> stubmaker --module-root app_petstore.client --src-root app_petstore/client.py --output-dir app_petstore/client.py
+```
+
+`app_petstore/client.pyi`:
+```python
+import apiclient.client
+
+
+class PetStoreAPIClient(apiclient.client.APIClient):
+    def create_pets(self) -> 'None':
+        """Create a pet
+        """
+        ...
+
+    def show_pet_by_id(self, *, petId: str) -> 'Pets':
+        """Info for a specific pet
+        """
+        ...
 ```
 
 ## License

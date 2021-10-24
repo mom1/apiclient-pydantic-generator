@@ -1,5 +1,5 @@
 {{#versions}}
-#### Release notes for `{{#tag}}{{{tag}}}{{/tag}}{{^tag}}{{{label}}}{{/tag}}` ({{{date}}})
+#### apiclient-pydantic-generator `{{#tag}}{{{tag}}}{{/tag}}{{^tag}}{{{label}}}{{/tag}}` ({{{date}}})
 
 {{#sections}}
 ##### {{{label}}}

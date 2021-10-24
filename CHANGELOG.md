@@ -1,12 +1,17 @@
 
-#### Release notes for `0.1.1` (2021-10-20)
+#### apiclient-pydantic-generator `0.1.1` (2021-10-24)
+
+##### ⬆️ Dependencies
+
+- ⬆️ Upgrade dependencies.
+- ⬆️ pre-commit autoupdate.
 
 ##### 📝 Docs
 
 - Update README.md.
 
 
-#### Release notes for `0.1.0` (2021-10-19)
+#### apiclient-pydantic-generator `0.1.0` (2021-10-19)
 
 ##### ✨ New
 
@@ -20,11 +25,11 @@
 - Add LICENSE.
 
 
-#### Release notes for `0.0.1` (2021-10-18)
+#### apiclient-pydantic-generator `0.0.1` (2021-10-18)
 
 ##### 📝 Docs
 
 - Add `api-client-pydantic` to readme.
 
 
-#### Release notes for `0.0.0` (2021-10-18)
+#### apiclient-pydantic-generator `0.0.0` (2021-10-18)

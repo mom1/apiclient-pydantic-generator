@@ -1,5 +1,11 @@
 
-#### apiclient-pydantic-generator `0.1.1` (2021-10-24)
+#### apiclient-pydantic-generator `0.1.1` (2022-03-01)
+
+##### ♻️ Changes
+
+- Small changes.
+  - Changed the way parameters are named
+  - The response data type is obtained from the 200 or 201 response code
 
 ##### ⬆️ Dependencies
 

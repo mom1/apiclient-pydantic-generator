@@ -317,7 +317,7 @@ class OpenAPIParser(OpenAPIModelParser):
         return arguments
 
     def create_pydantic_argument(self, path: List[str], fields: List[DataModelField], suffix: str):
-        original_name = self._get_model_name('_'.join(field.name for field in fields), '', suffix=suffix)
+        original_name = self._get_model_name(path[1], '', suffix=suffix)
         name = self.model_resolver.get_class_name(
             name=original_name,
             unique=False,
@@ -384,9 +384,9 @@ class OpenAPIParser(OpenAPIModelParser):
         path: List[str],
     ) -> Dict[str, Dict[str, DataType]]:
         data_types = super().parse_responses(name, responses, path)
-        status_code_200 = data_types.get('200')
-        if status_code_200:
-            data_type = list(status_code_200.values())[0]
+        response_status_code = data_types.get('200') or data_types.get('201')
+        if response_status_code:
+            data_type = list(response_status_code.values())[0]
             if data_type:
                 self.data_types.append(data_type)
             type_hint = data_type.type_hint  # TODO: change to lazy loading

@@ -392,13 +392,13 @@ class OpenAPIParser(OpenAPIModelParser):
         self._temporary_operation['response'] = type_hint
         return data_types
 
-    def _get_response(self, status_code: int, data_types: dict[str, dict[str, DataType]]):
+    def _get_response(self, status_code: int, data_types: dict[str, dict[str, DataType]]) -> DataType:
         response_model = data_types.get(f"{status_code}")
         if response_model:
             data_type = list(response_model.values())[0]
             if data_type:
                 self.data_types.append(data_type)
-            return data_type.type_hint
+            return data_type
 
     def parse_operation(
         self,

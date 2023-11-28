@@ -1,9 +1,6 @@
 from apiclient_pydantic_generator.format import YapfCodeFormatter
-from ward import test
 
-
-@test('test simple format')
-def _():
+def test_reformat():
     expect_code = """\
 from enum import Enum
 from pathlib import Path

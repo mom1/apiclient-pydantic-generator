@@ -27,14 +27,13 @@ from datamodel_code_generator.reference import Reference
 from datamodel_code_generator.types import DataType, DataTypeManager, StrictTypes
 from pydantic import BaseModel, validator
 
-
 RE_APPLICATION_JSON_PATTERN: Pattern[str] = re.compile(r'^application/.*json$')
 
 
 class CachedPropertyModel(BaseModel):
     class Config:
         arbitrary_types_allowed = True
-        keep_untouched = (cached_property, )
+        keep_untouched = (cached_property,)
 
 
 class Response(BaseModel):
@@ -359,8 +358,8 @@ class OpenAPIParser(OpenAPIModelParser):
         super().parse_request_body(name, request_body, path)
         arguments: List[Argument] = []
         for (
-                media_type,
-                media_obj,
+            media_type,
+            media_obj,
         ) in request_body.content.items():
             if isinstance(media_obj.schema_, (JsonSchemaObject, ReferenceObject)):  # pragma: no cover
                 if RE_APPLICATION_JSON_PATTERN.match(media_type):
@@ -384,17 +383,22 @@ class OpenAPIParser(OpenAPIModelParser):
         path: List[str],
     ) -> Dict[str, Dict[str, DataType]]:
         data_types = super().parse_responses(name, responses, path)
-        status_code_200 = data_types.get('200')
-        if status_code_200:
-            data_type = list(status_code_200.values())[0]
+        type_hint = 'None'
+        for code in [200, 201, 202]:
+            response_model = self._get_response(code, data_types)
+            if response_model:
+                type_hint = response_model.type_hint  # TODO: change to lazy loading
+                break
+        self._temporary_operation['response'] = type_hint
+        return data_types
+
+    def _get_response(self, status_code: int, data_types: dict[str, dict[str, DataType]]) -> DataType:
+        response_model = data_types.get(f"{status_code}")
+        if response_model:
+            data_type = list(response_model.values())[0]
             if data_type:
                 self.data_types.append(data_type)
-            type_hint = data_type.type_hint  # TODO: change to lazy loading
-        else:
-            type_hint = 'None'
-        self._temporary_operation['response'] = type_hint
-
-        return data_types
+            return data_type
 
     def parse_operation(
         self,

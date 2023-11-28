@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Any
 
 from {% if base_cls.from_ %}{{base_cls.from_}}{% else %}.{% endif %} import {{base_cls.import_}}{% if base_cls.alias %} as {{base_cls.alias}}{% endif %}
 from apiclient_pydantic import serialize_all_methods
